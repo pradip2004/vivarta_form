@@ -1,6 +1,6 @@
 const Registration = require('../models/Registration'); // Import the Registration model
-const xlsx = require('xlsx'); 
-const fs = require('fs'); 
+const xlsx = require('xlsx'); // Import xlsx
+const fs = require('fs'); // Import fs
 
 // Register a new user
 exports.registerUser = async (req, res) => {
@@ -20,6 +20,7 @@ exports.registerUser = async (req, res) => {
     await newRegistration.save();
     res.status(201).send('Registration successful');
   } catch (error) {
+    console.error('Error saving registration:', error); // Log error for debugging
     res.status(500).send('Error saving registration');
   }
 };
@@ -44,6 +45,10 @@ exports.generateExcel = async (req, res) => {
       _id: 0 
     });
 
+    if (!registrations.length) {
+      return res.status(404).send('No registrations found');
+    }
+
     const transformedData = registrations.map(({ firstname, lastname, studentid, batch, stream, phone, email }) => ({
       firstname,
       lastname,
@@ -56,23 +61,22 @@ exports.generateExcel = async (req, res) => {
 
     const workbook = xlsx.utils.book_new();
     const worksheet = xlsx.utils.json_to_sheet(transformedData);
-
     xlsx.utils.book_append_sheet(workbook, worksheet, 'Registrations');
 
     const filePath = 'registrations.xlsx';
-
     xlsx.writeFile(workbook, filePath);
 
     res.download(filePath, (err) => {
       if (err) {
-        console.error(err);
-        res.status(500).send('Error downloading the file.');
+        console.error('Error downloading the file:', err);
+        return res.status(500).send('Error downloading the file.');
       }
 
+      // Remove the file after download
       fs.unlinkSync(filePath); 
     });
   } catch (error) {
-    console.error(error);
+    console.error('Error generating the Excel file:', error); // Log error for debugging
     res.status(500).send('Error generating the Excel file.');
   }
 };

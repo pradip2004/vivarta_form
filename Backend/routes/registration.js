@@ -7,7 +7,10 @@ router.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-router.post('/register', registerUser); // Registration endpoint
-router.get('/generate-excel/:password', generateExcel); // Excel generation endpoint
+// Registration endpoint
+router.post('/register', registerUser);
+
+// Excel generation endpoint
+router.get('/generate-excel/:password', generateExcel);
 
 module.exports = router;
