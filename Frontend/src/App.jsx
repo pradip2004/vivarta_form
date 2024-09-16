@@ -49,7 +49,7 @@ const App = () => {
       </nav>
    
     <div className="form-container">
-    <ToastContainer />
+    
       
       <form className="student-form" onSubmit={handleSubmit}>
         <h2 className="form-title">Techno Vivarta Registration</h2>
