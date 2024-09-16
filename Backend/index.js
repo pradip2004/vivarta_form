@@ -6,7 +6,13 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors(
+  {
+    origin: ["https://vivarta-form.vercel.app/"],
+    methods: ["POST", "GET"],
+    credentials: true
+  }
+));
 app.use(bodyParser.json());
 
 // MongoDB connection
