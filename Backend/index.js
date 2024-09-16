@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+const fs = require('fs');
+const XLSX = require('xlsx');
+
 const app = express();
 
 // Middleware
@@ -34,6 +37,37 @@ const registrationSchema = new mongoose.Schema({
 // Create a model
 const Registration = mongoose.model('Registration', registrationSchema);
 
+
+const writeToExcel = (data) => {
+  const filePath = './registrations.xlsx';
+
+  // Check if the Excel file exists
+  let workbook;
+  let sheet;
+
+  if (fs.existsSync(filePath)) {
+    // If the file exists, read it
+    workbook = XLSX.readFile(filePath);
+    sheet = workbook.Sheets['Registrations'] || XLSX.utils.aoa_to_sheet([[]]);
+  } else {
+    // If the file doesn't exist, create a new workbook
+    workbook = XLSX.utils.book_new();
+    sheet = XLSX.utils.aoa_to_sheet([['First Name', 'Last Name', 'Student ID', 'Batch', 'Stream', 'Phone', 'Email']]);
+    XLSX.utils.book_append_sheet(workbook, sheet, 'Registrations');
+  }
+
+  // Append new registration data to the sheet
+  const sheetData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+  sheetData.push(data);
+  const updatedSheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+  // Replace the existing sheet with the updated one
+  workbook.Sheets['Registrations'] = updatedSheet;
+
+  // Write to the Excel file
+  XLSX.writeFile(workbook, filePath);
+};
+
 // API endpoint to handle form submission
 app.get('/', (req, res)=>{
   res.send('Hello World!')
@@ -53,10 +87,22 @@ app.post('/register', async (req, res) => {
 
   try {
     await newRegistration.save();
+
+    writeToExcel([firstname, lastname, studentid, batch, stream, phone, email]);
+
     res.status(201).send('Registration successful');
   } catch (error) {
     res.status(500).send('Error saving registration');
   }
+});
+
+app.get('/download', (req, res) => {
+  const filePath = './registrations.xlsx';
+  res.download(filePath, 'registrations.xlsx', (err) => {
+    if (err) {
+      res.status(500).send('Error downloading the file');
+    }
+  });
 });
 
 // Start the server
