@@ -29,6 +29,9 @@ const registrationSchema = new mongoose.Schema({
 const Registration = mongoose.model('Registration', registrationSchema);
 
 // API endpoint to handle form submission
+app.get('/', (req, res)=>{
+  res.send('Hello World!')
+})
 app.post('/register', async (req, res) => {
   const { firstname, lastname, studentid, batch, stream, phone, email } = req.body;
 
