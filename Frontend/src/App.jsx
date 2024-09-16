@@ -22,7 +22,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/register', formData);
+      await axios.post('https://vivarta-form-pradip-sadhukhans-projects.vercel.app/register', formData);
       alert('Registration successful');
       setFormData({
         firstname: '',

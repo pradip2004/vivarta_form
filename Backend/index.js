@@ -8,7 +8,7 @@ const app = express();
 // Middleware
 app.use(cors(
   {
-    origin: ["https://vivarta-form.vercel.app/"],
+    origin: ["https://vivarta-form-3333.vercel.app"],
     methods: ["POST", "GET"],
     credentials: true
   }
@@ -16,7 +16,7 @@ app.use(cors(
 app.use(bodyParser.json());
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/registration',)
+mongoose.connect('mongodb+srv://pradipsadhukhan16:Pradip%402004@cluster0.5r5m0ij.mongodb.net/registration')
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
