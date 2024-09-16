@@ -25,7 +25,6 @@ const App = () => {
     try {
       await axios.post('https://vivarta-form.vercel.app/register', formData);
       toast.success('Registration successful!', {
-        position: toast.POSITION.TOP_RIGHT,
         autoClose: 1500,
       });
       setFormData({
@@ -40,7 +39,6 @@ const App = () => {
     } catch (error) {
       console.error('Error registering', error);
       toast.error('Registration failed. Please try again.', {
-        position: toast.POSITION.TOP_RIGHT,
         autoClose: 1500,
       });
       
