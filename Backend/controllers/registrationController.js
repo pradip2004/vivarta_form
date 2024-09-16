@@ -1,4 +1,6 @@
 const Registration = require('../models/Registration'); // Import the Registration model
+const xlsx = require('xlsx'); 
+const fs = require('fs'); 
 
 // Register a new user
 exports.registerUser = async (req, res) => {
