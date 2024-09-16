@@ -11,11 +11,12 @@ const app = express();
 
 app.use(cors({
   origin: ["https://vivarta-form-3333.vercel.app"],
-  methods: ["POST", "GET", "OPTIONS"],
+  methods: ["POST", "GET"],
   credentials: true
 }));
 
 app.use(bodyParser.json());
+// app.options('*', cors());
 
 connectDB(); // Connect to MongoDB
 

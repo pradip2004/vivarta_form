@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import './App.css'; // Import the CSS file
 import logo from './assets/logo.png';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   const [formData, setFormData] = useState({
@@ -24,9 +23,7 @@ const App = () => {
     e.preventDefault();
     try {
       await axios.post('https://vivarta-form.vercel.app/register', formData);
-      toast.success('Registration successful!', {
-        autoClose: 1500,
-      });
+      alert("registration complete")
       setFormData({
         firstname: '',
         lastname: '',
@@ -38,9 +35,7 @@ const App = () => {
       });
     } catch (error) {
       console.error('Error registering', error);
-      toast.error('Registration failed. Please try again.', {
-        autoClose: 1500,
-      });
+      alert("registration failed")
       
     }
   };
